@@ -1,12 +1,12 @@
 { pkgs }:
 
-pkgs.stdenv.mkDerivation {
+pkgs.stdenv.mkDerivation rec {
     pname = "exomizer";
-    version = "3.0.2";
+    version = "3.1.0";
 
     src = pkgs.fetchurl {
-        url = https://bitbucket.org/magli143/exomizer/wiki/downloads/exomizer-3.0.2.zip;
-        sha256 = "0xb0n4cd94hny3g68jd5qim19f5ajz207dvbhj4l843cwvcs556g";
+        url = "https://bitbucket.org/magli143/exomizer/wiki/downloads/exomizer-${version}.zip";
+        sha256 = "dC+y9I3sYA2L7GqrA08k73g31YvqMWdIkENOO0mcHSA=";
     };
 
     nativeBuildInputs = [ pkgs.unzip ];
