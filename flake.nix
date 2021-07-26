@@ -13,5 +13,6 @@
         packages.c64debugger = import ./tools/c64debugger.nix { inherit pkgs; };
         packages.xa = import ./tools/xa.nix { inherit pkgs; };
         packages.vice = import ./tools/vice.nix { inherit pkgs; xa = packages.xa; };
+        packages.spindle = import ./tools/spindle.nix { inherit pkgs; xa = packages.xa; };
     });
 }
