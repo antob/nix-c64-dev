@@ -2,11 +2,11 @@
 
 pkgs.stdenv.mkDerivation rec {
   pname = "xa";
-  version = "2.3.11";
+  version = "2.3.12";
 
   src = pkgs.fetchzip {
     url = "https://www.floodgap.com/retrotech/${pname}/dists/${pname}-${version}.tar.gz";
-    sha256 = "1wz6l0ms97sja5frrhng2k9a7rh19g6z1iq88g42w93w2sn42fg7";
+    sha256 = "oUehxf7mBeYCUO6Kv9KdQ+tcNvFowgaNIwzaGbXIiKk=";
   };
 
   makeFlags = [
