@@ -1,4 +1,4 @@
-{ pkgs, xa }:
+{ pkgs }:
 
 pkgs.stdenv.mkDerivation rec {
     pname = "spindle";
@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation rec {
         sha256 = "WcXS3x3mnoBpB9iMrn4hvjRdHaXO8SgKKF/2DJm5x2k=";
     };
 
-    nativeBuildInputs = [ pkgs.unzip xa ];
+    nativeBuildInputs = [ pkgs.unzip pkgs.xa ];
 
     sourceRoot = "spindle-${version}/src";
     installPhase = ''

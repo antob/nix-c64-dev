@@ -2,12 +2,12 @@
 
 pkgs.stdenv.mkDerivation {
     pname = "kickassembler";
-    version = "5.23";
+    version = "5.24";
 
     src = pkgs.requireFile {
         name = "KickAssembler.zip";
         url = "http://theweb.dk/KickAssembler/KickAssembler.zip";
-        sha256 = "1ss161gghwcvk89qmqz2zgykzp1z5plqardz40yaqlxdc5gljay6";
+        sha256 = "05prq72bdpmh2h6vhfba5y10q9k2li19kmm1f78jka4iv5gj0i3i";
     };
 
     nativeBuildInputs = [ pkgs.unzip pkgs.makeWrapper ];
