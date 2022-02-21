@@ -13,7 +13,7 @@ pkgs.stdenv.mkDerivation rec {
     };
     sourceRoot = "source/packer/dali";
 
-    nativeBuildInputs = [ pkgs.acme ];
+    nativeBuildInputs = [ pkgs.acme pkgs.hexdump ];
 
     installPhase = ''
         install -Dm755 dali $out/bin/dali
