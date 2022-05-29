@@ -2,13 +2,13 @@
 
 pkgs.stdenv.mkDerivation rec {
     pname = "dali";
-    version = "2022-02-21";
+    version = "2022-05-28";
 
     src = pkgs.fetchFromGitHub {
         owner = "bboxy";
         repo = "bitfire";
-        rev = "1b0203d9aaadd103be408be34ebd4e4f3b1403e1";
-        sha256 = "O0qHqqhxR07wsG0PlWi67QJdj0NWIUEhPnx71461jOQ=";
+        rev = "efd47244d0026c65b4b618a82c5e7e38ace1a0f4";
+        sha256 = "sha256-BsYth8qYAXFNBqZqmCbhLKB6Y8f/fZGW6cXoxvMBTao=";
         fetchSubmodules = true;
     };
     sourceRoot = "source/packer/dali";
