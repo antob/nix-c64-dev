@@ -1,7 +1,7 @@
 { pkgs }:
 
 let
-  mtengine = pkgs.stdenv.mkDerivation rec {
+  mtengine = pkgs.gcc9Stdenv.mkDerivation rec {
     pname = "MTEngineSDL";
     version = "2021-02-18";
   
