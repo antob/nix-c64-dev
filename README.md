@@ -4,9 +4,8 @@ Some C64 development tools in a Nix flake
 
 ## Provided tools
 
-* Dali 0.3 from bitfire rev 1b0203
-* Exomizer 3.1.1
-* Kick Assembler 5.24
-* RetroDebugger rev 9bb81a
-* Spindle 3
-
+- Dali 0.3.5 from Bitfire v1.2
+- Exomizer 3.1.2
+- Kick Assembler 5.25
+- RetroDebugger v0.64.72
+- Spindle 3.1

@@ -1,25 +1,70 @@
 { pkgs }:
 
 let
-  mtengine = pkgs.gcc9Stdenv.mkDerivation rec {
+  usockets = pkgs.gcc12Stdenv.mkDerivation {
+    pname = "uSockets";
+    version = "0.8.8";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "uNetworking";
+      repo = "uSockets";
+      rev = "v0.8.8";
+      sha256 = "sha256-ZlyY2X0aDdjfV0zjcecOLaozwp1crDibx6GBbUnDyAk=";
+    };
+
+    patchPhase = ''
+      sed -i 's/lib.exe.*|| //' ./Makefile
+    '';
+
+    buildPhase = ''
+      AR=gcc-ar make -j$(nproc)
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r . $out
+    '';
+
+    meta = with pkgs.lib; {
+      description = "µSockets is the non-blocking, thread-per-CPU foundation library used by µWebSockets.";
+      homepage = "https://github.com/uNetworking/uSockets";
+      license = licenses.gpl3;
+      platforms = platforms.linux;
+    };
+  };
+
+  mtengine = pkgs.gcc12Stdenv.mkDerivation {
     pname = "MTEngineSDL";
-    version = "2021-02-18";
-  
+    version = "3.15";
+
     src = pkgs.fetchFromGitHub {
       owner = "slajerek";
       repo = "MTEngineSDL";
-      rev = "19b5295d875c197ec03bc20ddacd48c228920365";
-      sha256 = "VGx3s3aG24cCxNBGSwRupNeBQM4scRz9vQou0T4DVZg=";
+      rev = "ccea4c7";
+      sha256 = "sha256-eOILPCb2piSYHCOla4uKJzaCnE4Pau6XTVhwixYL1n4=";
     };
-  
-    nativeBuildInputs = [ pkgs.pkg-config pkgs.cmake ];
-    buildInputs = [ pkgs.SDL2 pkgs.gtk3 ];
-  
+
+    nativeBuildInputs = with pkgs; [
+      pkg-config
+      cmake
+      clang
+    ];
+    buildInputs = with pkgs; [
+      SDL2
+      gtk3
+      alsa-lib
+    ];
+
+    inherit usockets;
+    patchPhase = ''
+      cp -f "$usockets/uSockets.a" ./platform/Linux/libs/uSockets.a
+    '';
+
     installPhase = ''
       mkdir -p $out
       cp -r ../. $out
     '';
-  
+
     meta = with pkgs.lib; {
       description = "A SDL2+ImGui engine for macOS, Linux and MS Windows.";
       homepage = "https://github.com/slajerek/MTEngineSDL";
@@ -27,56 +72,65 @@ let
       platforms = platforms.linux;
     };
   };
+
 in
-  pkgs.stdenv.mkDerivation {
-    pname = "RetroDebugger";
-    version = "2021-02-18";
-  
-    src = pkgs.fetchFromGitHub {
-      owner = "slajerek";
-      repo = "RetroDebugger";
-      rev = "9bb81a2649fe476c3e409a4a62a159c9dc1be630";
-      sha256 = "pqzKlRMcbjntY9N/MwagS3K5xkitbxJ+WwQV6ejl7VA=";
-    };
+pkgs.gcc12Stdenv.mkDerivation {
+  pname = "RetroDebugger";
+  version = "0.64.72";
 
-    mtengine = mtengine;
-    unpackPhase = ''
-      runHook preUnpack
+  src = pkgs.fetchFromGitHub {
+    owner = "slajerek";
+    repo = "RetroDebugger";
+    rev = "v0.64.72";
+    sha256 = "sha256-p67FC4LJr+HII6+jwI0SaEt6qC4wUguCDmi4UdOzgMs=";
+  };
 
-      mkdir -p ./MTEngineSDL
-      mkdir -p ./RetroDebugger
+  inherit mtengine;
 
-      cp -r "$mtengine/." ./MTEngineSDL
-      cp -r "$src/." ./RetroDebugger
+  unpackPhase = ''
+    runHook preUnpack
 
-      sourceRoot=./RetroDebugger
-      runHook postUnpack
-    '';
+    mkdir -p ./MTEngineSDL
+    mkdir -p ./RetroDebugger
 
-    patchPhase = ''
-      sed -i 's|/usr/lib/x86_64-linux-gnu/libsndio.so|sndio|g' ./CMakeLists.txt
-    '';
-  
-    nativeBuildInputs = [ pkgs.pkg-config pkgs.cmake pkgs.makeWrapper ];
-    buildInputs = [ pkgs.SDL2 pkgs.gtk3 pkgs.glew pkgs.sndio pkgs.dbus ];
+    cp -r "$mtengine/." ./MTEngineSDL
+    cp -r "$src/." ./RetroDebugger
 
-    installPhase = ''
-      runHook preInstall
-      
-      mkdir -p $out/bin
-      cp ./retrodebugger $out/bin
+    sourceRoot=./RetroDebugger
+    runHook postUnpack
+  '';
 
-      runHook postInstall
-    '';
+  nativeBuildInputs = with pkgs; [
+    pkg-config
+    cmake
+    makeWrapper
+  ];
+  buildInputs = with pkgs; [
+    SDL2
+    gtk3
+    glew
+    sndio
+    dbus
+    alsa-lib
+  ];
 
-    postFixup = ''
-      wrapProgram $out/bin/retrodebugger --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.gnome.zenity ]}
-    '';
+  installPhase = ''
+    runHook preInstall
 
-    meta = with pkgs.lib; {
-      description = "A multiplatform debugger APIs host for retro computers: C64 (Vice), Atari800 and NES (NestopiaUE).";
-      homepage = "https://github.com/slajerek/RetroDebugger";
-      license = licenses.gpl3;
-      platforms = platforms.linux;
-    };
-  }
+    mkdir -p $out/bin
+    cp ./retrodebugger $out/bin
+
+    runHook postInstall
+  '';
+
+  postFixup = ''
+    wrapProgram $out/bin/retrodebugger --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.zenity ]}
+  '';
+
+  meta = with pkgs.lib; {
+    description = "A multiplatform debugger APIs host for retro computers: C64 (Vice), Atari800 and NES (NestopiaUE).";
+    homepage = "https://github.com/slajerek/RetroDebugger";
+    license = licenses.gpl3;
+    platforms = platforms.linux;
+  };
+}
