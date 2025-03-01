@@ -25,7 +25,7 @@ pkgs.stdenv.mkDerivation {
 
   meta = with pkgs.lib; {
     description = "An advanced MOS 65xx assembler combined with a Java Script like script language.";
-    license = licenses.unfree;
+    license = licenses.mit;
     platforms = platforms.linux;
   };
 }
