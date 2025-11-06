@@ -1,7 +1,7 @@
 { pkgs }:
 
 let
-  usockets = pkgs.gcc12Stdenv.mkDerivation {
+  usockets = pkgs.gcc13Stdenv.mkDerivation {
     pname = "uSockets";
     version = "0.8.8";
 
@@ -33,7 +33,7 @@ let
     };
   };
 
-  mtengine = pkgs.gcc12Stdenv.mkDerivation {
+  mtengine = pkgs.gcc13Stdenv.mkDerivation {
     pname = "MTEngineSDL";
     version = "3.15";
 
@@ -74,7 +74,7 @@ let
   };
 
 in
-pkgs.gcc12Stdenv.mkDerivation {
+pkgs.gcc13Stdenv.mkDerivation {
   pname = "RetroDebugger";
   version = "0.64.72";
 
