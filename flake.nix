@@ -24,7 +24,6 @@
         packages.kickassembler = import ./tools/kickassembler.nix { inherit pkgs; };
         packages.retrodebugger = import ./tools/retrodebugger.nix { inherit pkgs; };
         packages.spindle = import ./tools/spindle.nix { inherit pkgs; };
-        packages.ca65-lsp = import ./tools/ca65-lsp.nix { inherit pkgs; };
       }
     );
 }
