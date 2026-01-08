@@ -35,13 +35,13 @@ let
 
   mtengine = pkgs.gcc13Stdenv.mkDerivation {
     pname = "MTEngineSDL";
-    version = "3.15";
+    version = "3.16";
 
     src = pkgs.fetchFromGitHub {
       owner = "slajerek";
       repo = "MTEngineSDL";
-      rev = "ccea4c7";
-      sha256 = "sha256-eOILPCb2piSYHCOla4uKJzaCnE4Pau6XTVhwixYL1n4=";
+      rev = "bebe82880c17209faf953380d8d2c6febe101c2b";
+      sha256 = "sha256-pwjlJt/t8oOO25EVEf+toFJ8sBYcEyY5Y6gDuoSNLzM=";
     };
 
     nativeBuildInputs = with pkgs; [
@@ -49,6 +49,7 @@ let
       cmake
       clang
     ];
+
     buildInputs = with pkgs; [
       SDL2
       gtk3
@@ -57,6 +58,7 @@ let
 
     inherit usockets;
     patchPhase = ''
+      mkdir -p ./platform/Linux/libs
       cp -f "$usockets/uSockets.a" ./platform/Linux/libs/uSockets.a
     '';
 
@@ -76,13 +78,13 @@ let
 in
 pkgs.gcc13Stdenv.mkDerivation {
   pname = "RetroDebugger";
-  version = "0.64.72";
+  version = "0.64.74";
 
   src = pkgs.fetchFromGitHub {
     owner = "slajerek";
     repo = "RetroDebugger";
-    rev = "v0.64.72";
-    sha256 = "sha256-p67FC4LJr+HII6+jwI0SaEt6qC4wUguCDmi4UdOzgMs=";
+    rev = "v0.64.74";
+    sha256 = "sha256-VBqAL+/BDpm0qPIcV62Zb+Ha/qE6qCSdDCa/AYBG8oA=";
   };
 
   inherit mtengine;
@@ -104,7 +106,9 @@ pkgs.gcc13Stdenv.mkDerivation {
     pkg-config
     cmake
     makeWrapper
+    autoPatchelfHook
   ];
+
   buildInputs = with pkgs; [
     SDL2
     gtk3
